@@ -14,6 +14,9 @@
 #include <matplot/matplot.h>
 #include <tuple>
 #include <random>
+#include <iostream>
+#include <cstdlib> 
+#include <ctime> 
 
 #define ls          1.0e-7;
 #define	PI          3.1415926
@@ -37,10 +40,12 @@
 #define MZ 0
 #define FAC 1.0E-9
 #define N int(512)
-#define M 64   /*number of photons*/
+#define M 256   /*number of photons*/
 #define K 64 /*the number of time resolved 4-D coordinate returned by function
                             distance_to_interface()*/
-#define Nb 50;
+#define Nb 25;  /*Nbins*/
+#define COUNT 512    /*quantity of random number*/
+
 /* DECLARE FUNCTION */
 struct Tissue {
     int    index;
@@ -77,28 +82,26 @@ std::tuple<float, float(*)[4], bool,int>distance_to_interface(float x, float y, 
     float ux, float uy, float uz, short int* T, float delta_t, int Nbins, float s,
     float length_voxel, Tissue a[2]);
 
+float randnum(bool type);
 
 
 int main() {
-
+    
     using namespace matplot;
     using namespace std;
     Tissue a[2];
     a[0] = { 0,"air",0.0001,1,1.0 ,1};
-    a[1] = { 1,"kiwifruit",10,10,0.7 ,1.6};
+    a[1] = { 1,"kiwifruit",100,50,0.7 ,1.6};
     int Nbins = Nb;
     int flag = M;
     int i = 0, j=0,k;
     float(*q)[3] = { 0 };
     printf("success04\n");
-    float rnd;
     short int* T = create3Dmodel(Nbins);
     std::cout << "3D model created\n";
     tie(q) = montecarlo(T, Nbins,a);
     plot_geo2(flag, q);
-   
-
-
+    
 
 
     /*
@@ -131,13 +134,7 @@ int main() {
         std::cout << "\n";
     }
     */
-   
-
-   
     return 0;
-
-
-
 
 
 
@@ -145,6 +142,28 @@ int main() {
 
 }
 
+float randnum( bool type) {
+    static float rnd[COUNT];
+    static int i ;
+    float rndvalue = 0;
+    if (type == 0) {
+        std::srand(static_cast<unsigned int>(std::time(nullptr)));
+        for (int count = 0; count < COUNT; ++count)
+        {
+            rnd[count] = float(std::rand()) / RAND_MAX;
+            //std::cout << std::rand() << "\n"
+        }
+        i = 0;
+    }
+    else {
+        rndvalue = rnd[i];
+        if (i != COUNT - 1) i++;
+        else i = 0;
+    }
+      
+    return rndvalue;
+    
+}
 
 std::tuple<float, float(*)[4], bool, int>distance_to_interface(float x, float y, float z,
     float ux, float uy, float uz, short int* T, float delta_t, int Nbins, float s,
@@ -424,9 +443,11 @@ std::tuple<float(*)[3]> montecarlo(short int* T, int Nbins, Tissue a[2]) {
     float(*c0)[4];
     int f, k;
     int i;
+    int rndflag = 0;;
+    
 
-
-    InitRandomGen;
+    //InitRandomGen;
+    randnum(0);
     nphotons = M; // will be updated to achieve desired run time, time_min.
     i_photon = 0;
     cnt = 0;
@@ -445,7 +466,7 @@ std::tuple<float(*)[3]> montecarlo(short int* T, int Nbins, Tissue a[2]) {
         std::cout << "\n\n\nphoton : " << i_photon << " launched\n";
         int loop = 0;
 
-
+        
 
         do {
             loop++;
@@ -456,7 +477,8 @@ std::tuple<float(*)[3]> montecarlo(short int* T, int Nbins, Tissue a[2]) {
                 photon_status = DEAD;
             }*/
             if (sleft ==0 || flag1 == 1) {
-                while ((rnd = RandomNum) <= 0.0);
+                //while ((rnd = RandomNum) <= 0.0);
+                rnd = randnum(1);
                 sleft = -log(rnd);
                 std::cout << "sleft = " << sleft << "\n";
                 flag1 = 0;
@@ -501,7 +523,8 @@ std::tuple<float(*)[3]> montecarlo(short int* T, int Nbins, Tissue a[2]) {
             }
             if (flag1 == 1) {
                 /* sample for costheta */
-                rnd = RandomNum;
+                //rnd = RandomNum;
+                rnd = randnum(1);
                 if (g == 0.0)
                     costheta = 2.0 * rnd - 1.0;
                 else {
@@ -511,7 +534,9 @@ std::tuple<float(*)[3]> montecarlo(short int* T, int Nbins, Tissue a[2]) {
                 sintheta = sqrt(1.0 - costheta * costheta); /* sqrt() is faster than sin(). */
 
                 /* sample psi. */
-                psi = 2.0 * PI * RandomNum;
+                rnd = randnum(1);
+                psi = 2.0 * PI * rnd;
+                //psi = 2.0 * PI * RandomNum;
                 cospsi = cos(psi);
                 if (psi < PI)
                     sinpsi = sqrt(1.0 - cospsi * cospsi);     /* sqrt() is faster than sin(). */
@@ -545,7 +570,8 @@ std::tuple<float(*)[3]> montecarlo(short int* T, int Nbins, Tissue a[2]) {
                  and 1-chance probability of terminating.
                  *****/
             if (w < THRESHOLD) {
-                if (RandomNum <= CHANCE)
+                //rnd = randnum(1);
+                if (rnd <= CHANCE)
                     w /= CHANCE;
                 else
                 {
