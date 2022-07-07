@@ -57,6 +57,8 @@ std::tuple<std::vector< std::vector<float> >(*)> read_path(std::string directory
     fin.read((char*)&I, sizeof(int));
     fin.read((char*)&J, sizeof(int));
     fin.read((char*)&L, sizeof(int));
+    //std::vector<std::vector<float>>  *path;
+    //path = (std::vector<std::vector<float>>*)malloc(M*sizeof(std::vector<std::vector<float>>));
     std::cout << "I = " << I << "  J = " << J << "  L = " << L << "\n";
     for (i = 0;i < I;i++) {
         path[i].resize(J);

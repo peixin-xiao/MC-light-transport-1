@@ -89,8 +89,10 @@ short int* create3Dmodel(int Nbins) {
     return (T);
 }
 
-void write_model(short int* T, std::string directory, int Nbins, float length_voxel) {
+void write_model(short int* T, std::string directory, int Nbins, 
+    float length_voxel, int FLAG, int (* p)[3]) {
     int i, j, k;
+    int flag;
     //int Nbins = Nb;
     std::ofstream fout(directory, std::ios::binary);
     fout.write((char*)&(Nbins), sizeof(int));
@@ -104,6 +106,12 @@ void write_model(short int* T, std::string directory, int Nbins, float length_vo
 
             }
         }
+    }
+    fout.write((char*)&(FLAG), sizeof(int));
+    for (flag = 0;flag < FLAG;flag++) {
+        fout.write((char*)&(p[flag][0]), sizeof(int));
+        fout.write((char*)&(p[flag][1]), sizeof(int));
+        fout.write((char*)&(p[flag][2]), sizeof(int));
     }
     fout.close();
     std::cout << "model written\n";
@@ -133,7 +141,7 @@ short int* read_model() {
 
 std::tuple<int, int(*)[3] > find_vertex(int nbins, short int* t) {
     int i, j, k;
-    int vertex[N][3], flag = 0;
+    static int vertex[N][3], flag = 0;
     int(*p)[3];
     for (i = 0;i < nbins;i++) {
         for (j = 0;j < nbins;j++) {
@@ -189,12 +197,12 @@ int main()
 {
     int Nbins = Nb;
     float length_voxel = 0.002;
-    char directory[] = "C:\\Users\\Administrator\\source\\data\\model.dat";
-    short int* T = create3Dmodel(Nbins);
-    write_model(T, directory, Nbins, length_voxel);
     int FLAG;
     int(*p)[3];
+    char directory[] = "C:\\Users\\Administrator\\source\\data\\model.dat";
+    short int* T = create3Dmodel(Nbins);
     std::tie(FLAG, p) = find_vertex(Nbins, T);
+    write_model(T, directory, Nbins, length_voxel, FLAG, p);
     plot_geo(FLAG, p);
 }
 
