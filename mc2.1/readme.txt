@@ -8,3 +8,5 @@ Caution : when change the resolution of model (Nbins), please change the amount 
           
 in mc2.0.cpp : #define M 1024 //amount of photons
                #define N int(4096) // amount of vertex of model geometry
+in model_generator.cpp : #define Nb 75;  /*Nbins*/
+                         #define N int(4096) //nums of vertex
