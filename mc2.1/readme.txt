@@ -5,3 +5,6 @@ which means the resolution of the model has been increased
 
 Caution : when change the resolution of model (Nbins), please change the amount of vertex N at the same time
           when change the amount of launchend photons, please change it both in the mc2.0.cpp and the read_path_and_calculate.cpp
+          
+in mc2.0.cpp : #define M 1024 //amount of photons
+               #define N int(4096) // amount of vertex of model geometry
