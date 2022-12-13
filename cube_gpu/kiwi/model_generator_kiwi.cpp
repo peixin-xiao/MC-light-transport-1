@@ -51,7 +51,7 @@ short int* create3Dmodel(int Nbins) {
 
     T = (short int*)malloc(1 * pow(Nbins, 3) * sizeof(short int));
     
-    //memset(T, 1, sizeof(short)* pow(Nbins, 3));
+    memset(T, 0, sizeof(short) * pow(Nbins, 3));
 
     printf("success00\n");
     for (i = 0; i < Nbins;i++) {
@@ -122,7 +122,7 @@ short int* create3Dmodel_lr(int Nbins,int mag) { //lr: low resolution
     int radius = int(Nbins * 0.25);
 
     T = (short int*)malloc(1 * pow(Nbins, 3) * sizeof(short int));
-    //memset(T, 1, sizeof(short)* pow(Nbins, 3));
+    memset(T, 0, sizeof(short) * pow(Nbins, 3));
 
     printf("success00\n");
     for (i = 0; i < Nbins;i++) {
