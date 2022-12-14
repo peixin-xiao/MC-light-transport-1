@@ -5,7 +5,7 @@ co = zeros(Nbins,Nbins,Nbins);
 for i=1:1:Nbins
     for j=1:1:Nbins
         for k=1:1:Nbins
-            co(i,j,k) = fread(fileID,1,'int16');
+            co(j,i,k) = fread(fileID,1,'int16');
         end
     end
 end
@@ -17,3 +17,4 @@ for i=1:1:FLAG
     p1(i,3) = fread(fileID,1,'int');
 end
 fclose(fileID);
+% scatter3(p1(:,1),p1(:,2),p1(:,3));
