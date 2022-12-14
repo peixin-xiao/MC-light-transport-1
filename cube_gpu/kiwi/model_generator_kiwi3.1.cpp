@@ -71,14 +71,14 @@ short int* create3Dmodel(int Nbins) {
                 else if ((pow((i - sphere_center[0]), 2) / pow(94, 2) + pow((j - sphere_center[1]), 2) / pow(135, 2)
                     + pow((k - sphere_center[2]), 2) / pow(94, 2) <= 1) && (((j >= 38) && (j <= 189) &&
                         (pow((i - sphere_center[0]), 2) + pow((k - sphere_center[2]), 2) < 1351)) == 0)) {
-                    *(T + i * Nbins * Nbins + j * Nbins + k) = 3;
+                    *(T + i * Nbins * Nbins + j * Nbins + k) = 2;
 
                     B++;
                 }
                 else if ((((j >= 38) && (j <= 189) &&
                     (pow((i - sphere_center[0]), 2) + pow((k - sphere_center[2]), 2) < 1351)) == 1))
                 {
-                    *(T + i * Nbins * Nbins + j * Nbins + k) = 4;
+                    *(T + i * Nbins * Nbins + j * Nbins + k) = 3;
                     C++;
                 }
                 //
@@ -134,7 +134,7 @@ short int* create3Dmodel_lr(int Nbins, int mag) { //lr: low resolution
                     + pow((k - sphere_center[2]), 2) / pow(96 / mag, 2) <= 1) && (pow((i - sphere_center[0]), 2) / pow(94 / mag, 2)
                         + pow((j - sphere_center[1]), 2) / pow(135 / mag, 2)
                         + pow((k - sphere_center[2]), 2) / pow(94 / mag, 2) > 1)) {
-                    *(T + i * Nbins * Nbins + j * Nbins + k) = 2;
+                    *(T + i * Nbins * Nbins + j * Nbins + k) = 1;
 
                     A++;
 
@@ -142,14 +142,14 @@ short int* create3Dmodel_lr(int Nbins, int mag) { //lr: low resolution
                 else if ((pow((i - sphere_center[0]), 2) / pow(94 / mag, 2) + pow((j - sphere_center[1]), 2) / pow(135 / mag, 2)
                     + pow((k - sphere_center[2]), 2) / pow(94 / mag, 2) <= 1) && (((j >= 38 / mag) && (j <= 189 / mag) &&
                         (pow((i - sphere_center[0]), 2) + pow((k - sphere_center[2]), 2) < pow(36.76 / mag, 2))) == 0)) {
-                    *(T + i * Nbins * Nbins + j * Nbins + k) = 3;
+                    *(T + i * Nbins * Nbins + j * Nbins + k) = 2;
 
                     B++;
                 }
                 else if ((((j >= 38 / mag) && (j <= 189 / mag) &&
                     (pow((i - sphere_center[0]), 2) + pow((k - sphere_center[2]), 2) < pow(36.76 / mag, 2))) == 1))
                 {
-                    *(T + i * Nbins * Nbins + j * Nbins + k) = 4;
+                    *(T + i * Nbins * Nbins + j * Nbins + k) = 3;
                     C++;
                 }
                 //
